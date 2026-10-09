@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodResQ — 15-Slide Master Project Presentation</title>
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --navy: #0f172a;
+      --slate-dark: #1e293b;
+      --slate-text: #334155;
+      --muted: #64748b;
+      --card-bg: #f8fafc;
+      --border: #e2e8f0;
+      --amber: #d97706;
+      --amber-bg: #fef3c7;
+      --emerald-bg: #ecfdf5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #090d16;
+      color: #f1f5f9;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    /* Top presentation control bar */
+    .top-bar {
+      height: 52px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-badge {
+      background: var(--primary);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #334155;
+      color: white;
+      border-color: #475569;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+
+    .slide-counter {
+      font-size: 14px;
+      font-weight: 600;
+      color: #94a3b8;
+      min-width: 90px;
+      text-align: center;
+    }
+
+    /* Presentation viewport */
+    .deck-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+    }
+
+    .slide-stage {
+      width: 100%;
+      max-width: 1240px;
+      aspect-ratio: 16 / 9;
+      background: #ffffff;
+      color: #1e293b;
+      border-radius: 12px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
+      position: relative;
+      overflow: hidden;
+      display: none;
+      flex-direction: column;
+    }
+
+    .slide-stage.active {
+      display: flex;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.99); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Standard Slide Structure */
+    .slide-header {
+      background: var(--navy);
+      color: white;
+      padding: 18px 32px 14px 32px;
+      border-bottom: 3px solid var(--primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .slide-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: #34d399;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .slide-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+    }
+
+    .slide-num-tag {
+      font-size: 14px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .slide-body {
+      flex: 1;
+      padding: 24px 32px 16px 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      background: #f8fafc;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card.amber {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .card.emerald {
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .card.amber .card-title {
+      color: #b45309;
+    }
+
+    .card.emerald .card-title {
+      color: #047857;
+    }
+
+    .badge {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .badge.green {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge.amber {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .card-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--slate-text);
+      line-height: 1.45;
+    }
+
+    .card-list li {
+      position: relative;
+      padding-left: 14px;
+    }
+
+    .card-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 1;
+      top: 1px;
+    }
+
+    .card-list strong {
+      color: var(--navy);
+    }
+
+    .slide-footer {
+      padding: 8px 32px 12px 32px;
+      background: #f8fafc;
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Dark Title Slide (Slide 1 & Slide 15) */
+    .slide-stage.dark-theme {
+      background: var(--navy);
+      color: white;
+    }
+
+    .dark-container {
+      padding: 44px 50px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .title-banner h1 {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .title-banner h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #34d399;
+      margin-bottom: 10px;
+    }
+
+    .title-banner p {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 28px;
+    }
+
+    .dark-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      flex: 1;
+    }
+
+    .dark-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dark-card-title {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+    }
+
+    .dark-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+
+    .dark-list li::before {
+      content: "✔ ";
+      color: #34d399;
+      font-weight: bold;
+    }
+
+    /* Keyboard navigation hint */
+    .kbd-hint {
+      position: absolute;
+      bottom: 12px;
+      right: 24px;
+      font-size: 11px;
+      color: #64748b;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    kbd {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar controls -->
+  <div class="top-bar">
+    <div class="brand">
+      <span class="brand-badge">PPTX</span>
+      <span>FoodResQ — Master Project Deck</span>
+    </div>
+    <div class="controls">
+      <button class="btn" onclick="prevSlide()">◀ Previous</button>
+      <span class="slide-counter" id="slideIndicator">Slide 01 / 15</span>
+      <button class="btn btn-primary" onclick="nextSlide()">Next ▶</button>
+      <button class="btn" onclick="toggleFullScreen()">⛶ Fullscreen</button>
+      <a href="FoodResQ_Project_Presentation.pptx" download class="btn" style="text-decoration:none; color:inherit;">
+        ⬇ Download .PPTX
+      </a>
+    </div>
+  </div>
+
+  <!-- Stage -->
+  <div class="deck-container">
+
+    <!-- SLIDE 1 -->
+    <div class="slide-stage dark-theme active" id="slide-1">
+      <div class="dark-container">
+        <div class="title-banner">
+          <h1>FoodResQ</h1>
+          <h2>Hyperlocal Real-Time Surplus Food Redistribution Platform</h2>
+          <p>Bridging Urban Food Waste & Nutritional Insecurity via Full-Stack MERN Architecture</p>
+        </div>
+        <div class="dark-grid">
+          <div class="dark-card">
+            <div class="dark-card-title" style="color:#34d399;">Core Architecture</div>
+            <ul class="dark-list">
+              <li>MERN Stack: React 18, Node.js, Express, MongoDB Atlas</li>
+              <li>Vite 5 Bundler with Hot Module Replacement</li>
+              <li>Tailwind CSS v4 Responsive Design System</li>
+              <li>Leaflet.js Mapping & Canvas Coordinate Overlays</li>
+            </ul>
+          </div>
+          <div class="dark-card">
+            <div class="dark-card-title" style="color:#fbbf24;">Key Pillars</div>
+            <ul class="dark-list">
+              <li>Zero-Barrier Access for Hungry Seekers (No Auth)</li>
+              <li>Symmetrical 3-Way Authentication (Donor / NGO / User)</li>
+              <li>OpenStreetMap GPS Reverse Geocoding Engine</li>
+              <li>Verified NGO Command Center with Darpan ID Checks</li>
+            </ul>
+          </div>
+          <div class="dark-card">
+            <div class="dark-card-title" style="color:#93c5fd;">Project Metadata</div>
+            <ul class="dark-list">
+              <li>Presenter / Developer: Zahid</li>
+              <li>Academic Viva & Comprehensive Defense</li>
+              <li>Status: Production Ready & Cloud Connected</li>
+              <li>Domain: Civic Tech / GIS / Perishable Logistics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide-stage" id="slide-2">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Context & Motivation</div>
+          <div class="slide-title">The Urban Paradox: Food Wastage vs Nutritional Insecurity</div>
+        </div>
+        <div class="slide-num-tag">02 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card amber">
+          <div class="card-header">
+            <span class="card-title">The Problem Statistics</span>
+            <span class="badge amber">CRITICAL DATA</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>National Discard:</strong> Over 68+ million tonnes of edible food wasted annually in India.</li>
+            <li><strong>Hunger Vulnerability:</strong> 200+ million citizens suffer chronic malnutrition daily.</li>
+            <li><strong>Commercial Waste:</strong> Weddings, banquet halls, and restaurants discard surplus daily.</li>
+            <li><strong>Time Decay:</strong> Cooked meals spoil within 4-6 hours if not rapidly claimed.</li>
+            <li><strong>Methane Footprint:</strong> Food in landfills contributes heavily to greenhouse gas emissions.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Failures of Current Systems</span>
+            <span class="badge">SYSTEM GAPS</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>High Friction Barriers:</strong> Existing apps mandate OTPs, passwords, and app downloads.</li>
+            <li><strong>Exclusion of Needy:</strong> Street dwellers and hungry seekers lack email credentials.</li>
+            <li><strong>Delayed Communication:</strong> Manual NGO helplines take 12-24 hours to arrange pickup.</li>
+            <li><strong>Raw Coordinates:</strong> Cryptic latitude/longitude confuses drivers without street names.</li>
+            <li><strong>Fragmented Donors:</strong> Restaurants lack a single unified platform to broadcast urgent surplus.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">The FoodResQ Solution</span>
+            <span class="badge green">OUR APPROACH</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Zero-Barrier Access:</strong> Public browsing allows hungry citizens to locate food with 0 logins.</li>
+            <li><strong>Hyperlocal Matching:</strong> Proximity radius sorts food from 1 km to 5 km distance.</li>
+            <li><strong>Symmetrical Security:</strong> Role-based access protects NGO audits and donor profiles.</li>
+            <li><strong>Smart Geocoding:</strong> Auto-translates device GPS coordinates into local neighborhood names.</li>
+            <li><strong>Dynamic Freshness:</strong> Live countdown timers invalidate spoiled food automatically.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">FoodResQ transforms an urgent perishable logistics crisis into an automated, transparent hyperlocal coordination network.</div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide-stage" id="slide-3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">System Design</div>
+          <div class="slide-title">Full-Stack 3-Tier Enterprise Architecture</div>
+        </div>
+        <div class="slide-num-tag">03 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Tier 1: Client Layer</span>
+            <span class="badge">FRONTEND</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>React 18 SPA:</strong> Modern functional components with Concurrent Mode rendering.</li>
+            <li><strong>Vite 5:</strong> Lightning-fast ES module bundler with instant Hot Module Replacement.</li>
+            <li><strong>Tailwind CSS v4:</strong> Semantic utility classes with perfectly symmetrical forms.</li>
+            <li><strong>Leaflet.js:</strong> Interactive canvas mapping with customized category pins.</li>
+            <li><strong>FoodContext Store:</strong> Central state provider for real-time data & auto-expiry.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Tier 2: Application Layer</span>
+            <span class="badge">BACKEND API</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Node.js v22 LTS:</strong> High-throughput asynchronous non-blocking event loop.</li>
+            <li><strong>Express 4.19:</strong> Lightweight, modular REST API controller pipeline.</li>
+            <li><strong>CORS Protection:</strong> Cross-origin security middleware for client verification.</li>
+            <li><strong>Reverse Geocode Proxy:</strong> Connects to OpenStreetMap Nominatim service.</li>
+            <li><strong>Atomic Locking:</strong> Prevents race conditions during simultaneous food claims.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">Tier 3: Data Layer</span>
+            <span class="badge green">DATABASE</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>MongoDB Atlas:</strong> Cloud-hosted distributed document database cluster.</li>
+            <li><strong>Mongoose 8:</strong> Schema enforcement, model relationships, and type casting.</li>
+            <li><strong>Replica Sets:</strong> High-availability architecture with automated failover.</li>
+            <li><strong>Geospatial Indexing:</strong> Scalable 2dsphere indexing for high-speed location queries.</li>
+            <li><strong>Dual-Mode Fallback:</strong> Instant browser localStorage sync during offline periods.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Decoupled 3-tier architecture allows independent frontend scaling and backend microservice migration without service interruption.</div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide-stage" id="slide-4">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Frontend Engineering</div>
+          <div class="slide-title">Modern Reactive Client Architecture & UI Components</div>
+        </div>
+        <div class="slide-num-tag">04 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Core Technologies</span>
+            <span class="badge">STACK SPEC</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>React 18.3:</strong> React Hooks architecture (useContext, useState, useEffect, useMemo).</li>
+            <li><strong>Vite 5.4:</strong> Sub-second bundling and zero-config production optimizations.</li>
+            <li><strong>Tailwind CSS v4:</strong> Modern CSS architecture with zero bloated CSS runtime.</li>
+            <li><strong>Lucide React:</strong> Lightweight SVG vector iconography for consistent visual tokens.</li>
+            <li><strong>Mobile-First Layout:</strong> 100% fluid responsive design for smartphones & desktops.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">UI/UX Architecture</span>
+            <span class="badge">DESIGN SYSTEM</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Zero-Barrier Discovery:</strong> Public home feed highlights food without login screens.</li>
+            <li><strong>Symmetrical Modals:</strong> Unified geometric dimensions across Sign In, Donor, & NGO.</li>
+            <li><strong>Urgency Badges:</strong> Color-coded freshness meters (Fresh, Expiring Soon, Expired).</li>
+            <li><strong>Interactive Map View:</strong> OpenStreetMap canvas tiles avoiding proprietary Google fees.</li>
+            <li><strong>Toast Feedback:</strong> Non-intrusive notifications for posts, claims, and geolocations.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">State & Lifecycle</span>
+            <span class="badge green">REACTIVE STATE</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>FoodContext Store:</strong> Global state eliminates prop-drilling across app views.</li>
+            <li><strong>Dual Sync Engine:</strong> Reads from MongoDB Atlas; writes to local storage cache.</li>
+            <li><strong>Real-Time Expiry Heartbeat:</strong> 60-second timer recalculates food freshness status.</li>
+            <li><strong>Optimistic Updates:</strong> Claims reflect on screen instantly before server confirms.</li>
+            <li><strong>Clean Re-rendering:</strong> Memoized selectors prevent costly redundant page paints.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Lightweight bundle footprint (<200KB gzip) enables instant loading even on low-speed 3G cellular networks.</div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide-stage" id="slide-5">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Backend Engineering</div>
+          <div class="slide-title">Express.js RESTful API & High-Throughput Routing</div>
+        </div>
+        <div class="slide-num-tag">05 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Server Architecture</span>
+            <span class="badge">RUNTIME</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Node.js v22 LTS:</strong> High-concurrency event-driven V8 JavaScript execution.</li>
+            <li><strong>Express 4.19 Framework:</strong> Clear separation of routes, controllers, and schemas.</li>
+            <li><strong>Middleware Pipeline:</strong> JSON parser, CORS authorization, and global error capturer.</li>
+            <li><strong>Config Isolation:</strong> Environment variables manage Atlas strings, ports, and secrets.</li>
+            <li><strong>Health Monitoring:</strong> MongoDB heartbeat ensures automated pool recovery.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Complete API Inventory</span>
+            <span class="badge">13 ENDPOINTS</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>POST /api/auth/register:</strong> Register donor or verified NGO accounts.</li>
+            <li><strong>POST /api/auth/login:</strong> Authenticate user and return role metadata.</li>
+            <li><strong>GET /api/food:</strong> Retrieve all active listings with distance and category filters.</li>
+            <li><strong>POST /api/food:</strong> Publish surplus food with GPS coordinates and expiry hours.</li>
+            <li><strong>POST /api/food/:id/claim:</strong> Atomic claim transaction for NGOs and seekers.</li>
+            <li><strong>GET /api/rescues:</strong> Fetch historical rescue logs for dashboard impact metrics.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">Reliability & Security</span>
+            <span class="badge green">STABILITY</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Atomic Locking:</strong> findOneAndUpdate ensures only one claim succeeds on a meal.</li>
+            <li><strong>Standard Status Codes:</strong> 200 OK, 201 Created, 400 Bad Request, 409 Conflict.</li>
+            <li><strong>Input Sanitization:</strong> Verifies email formatting, numbers, and required fields.</li>
+            <li><strong>Graceful Shutdown:</strong> SIGTERM handler cleanly closes active database pools.</li>
+            <li><strong>Structured Errors:</strong> Clean JSON responses make debugging and toast alerts trivial.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Stateless RESTful endpoints ensure seamless horizontal scaling across cloud containers without session drift.</div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide-stage" id="slide-6">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Data Architecture</div>
+          <div class="slide-title">MongoDB Atlas Document Models & Mongoose Schemas</div>
+        </div>
+        <div class="slide-num-tag">06 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">User Model & RBAC</span>
+            <span class="badge">USER SCHEMA</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>name:</strong> String (Required, donor or organization name).</li>
+            <li><strong>email:</strong> String (Unique index, trimmed, lowercase validation).</li>
+            <li><strong>password:</strong> String (Secure credential storage).</li>
+            <li><strong>role:</strong> Enum ['donor', 'ngo', 'admin'] (Controls dashboard access).</li>
+            <li><strong>darpanId:</strong> String (Government NGO Darpan ID validation).</li>
+            <li><strong>phone & address:</strong> String (Contact coordinates for dispatch teams).</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">FoodPost Model</span>
+            <span class="badge green">CORE SCHEMA</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>title & description:</strong> Food overview and special dietary notes.</li>
+            <li><strong>quantity:</strong> Number of available portions/meals.</li>
+            <li><strong>foodType:</strong> Enum ['Cooked Food', 'Raw Grocery', 'Packaged Food'].</li>
+            <li><strong>dietType:</strong> Enum ['Veg', 'Non-Veg', 'Vegan'].</li>
+            <li><strong>location:</strong> Object { lat, lng, address } for GIS mapping.</li>
+            <li><strong>expiryHours:</strong> Lifespan duration for automatic freshness calculation.</li>
+            <li><strong>status:</strong> Enum ['available', 'claimed', 'expired'].</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">RescueHistory & Reviews</span>
+            <span class="badge">AUDIT & TRUST</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>RescueHistory:</strong> Records foodPostId, donorId, ngoId, and status.</li>
+            <li><strong>Milestone Stages:</strong> Tracks ['claimed', 'picked_up', 'distributed'].</li>
+            <li><strong>Timestamps:</strong> Audit log of claim time vs actual completion time.</li>
+            <li><strong>Review Model:</strong> 1 to 5 star ratings and feedback comments.</li>
+            <li><strong>Trust Metric:</strong> Builds accountability scores for donors and recipient NGOs.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Mongoose schemas strictly enforce business logic while preserving MongoDB's native JSON document retrieval speed.</div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide-stage" id="slide-7">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Geospatial Intelligence</div>
+          <div class="slide-title">Geolocation, Leaflet Mapping & OpenStreetMap Pipeline</div>
+        </div>
+        <div class="slide-num-tag">07 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">GPS Location Capture</span>
+            <span class="badge">CLIENT GPS</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Browser API:</strong> navigator.geolocation.getCurrentPosition() with high accuracy.</li>
+            <li><strong>Permission Handling:</strong> Non-blocking prompt with fallback to manual address input.</li>
+            <li><strong>Precision Coordinates:</strong> Captures exact latitude and longitude coordinates.</li>
+            <li><strong>Real-Time Pinning:</strong> Renders donor position marker instantly on the interactive map.</li>
+            <li><strong>Zero Cost:</strong> Uses open web standards without proprietary Google Maps API billing.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">Smart Reverse Geocoding</span>
+            <span class="badge green">NOMINATIM</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>The Problem:</strong> Raw coordinates (e.g. 12.9716, 77.5946) confuse users.</li>
+            <li><strong>Nominatim API:</strong> Queries OpenStreetMap reverse geocoding REST service.</li>
+            <li><strong>Structured Parsing:</strong> Extracts road, suburb, neighbourhood, city, and pincode.</li>
+            <li><strong>Readable Result:</strong> Formats clean address string: "Indiranagar, Bengaluru".</li>
+            <li><strong>Resilient Fallback:</strong> If network times out, safely formats coordinates as text.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Leaflet & Spatial Proximity</span>
+            <span class="badge">MAP ENGINE</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Canvas Tile Engine:</strong> Smooth panning, zooming, and cluster rendering.</li>
+            <li><strong>Categorized Markers:</strong> Color-coded pins for Veg (Green), Non-Veg (Red), Urgent (Amber).</li>
+            <li><strong>Interactive Popups:</strong> Shows meal title, quantity, distance, and direct claim button.</li>
+            <li><strong>Haversine Formula:</strong> Calculates accurate radial distance in kilometers.</li>
+            <li><strong>Proximity Sorting:</strong> Seekers sort available surplus from closest to farthest.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Automated reverse geocoding transforms abstract GPS coordinates into actionable street-level pickup instructions.</div>
+    </div>
+
+    <!-- SLIDE 8 -->
+    <div class="slide-stage" id="slide-8">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Security & Identity</div>
+          <div class="slide-title">Symmetrical 3-Way Authentication Matrix & RBAC</div>
+        </div>
+        <div class="slide-num-tag">08 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Unified Sign In Card</span>
+            <span class="badge">LOGIN MODAL</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Visual Symmetry:</strong> Harmonized card proportions matching registration views.</li>
+            <li><strong>Credential Inputs:</strong> Email and password with real-time field validation.</li>
+            <li><strong>Role-Based Redirection:</strong> Automatically routes Donors to Hub and NGOs to Command Center.</li>
+            <li><strong>Seed Demo User:</strong> One-click demo login button for seamless viva testing.</li>
+            <li><strong>Session Persistence:</strong> Keeps user logged in across page reloads.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Donor Registration</span>
+            <span class="badge">DONOR SIGNUP</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Target Audience:</strong> Restaurants, catering companies, banquet halls, and citizens.</li>
+            <li><strong>Required Fields:</strong> Organization/Full Name, verified Email, Password, Contact Phone.</li>
+            <li><strong>Default Location:</strong> Pre-saves kitchen location for faster surplus postings.</li>
+            <li><strong>Instant Activation:</strong> Allows posting food immediately after account creation.</li>
+            <li><strong>Consistent Tokens:</strong> Identical padding, border-radius, and focus ring styling.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">NGO Registration Card</span>
+            <span class="badge green">VERIFIED NGO</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Target Audience:</strong> Non-profits, food rescue trusts, and shelter kitchens.</li>
+            <li><strong>Darpan ID Validation:</strong> Enforces NGO Darpan / FCRA number for legitimacy.</li>
+            <li><strong>Anti-Fraud Guard:</strong> Prevents unauthorized commercial entities from claiming free food.</li>
+            <li><strong>Fleet Capacity:</strong> Records vehicle counts and pickup team availability.</li>
+            <li><strong>Command Center Access:</strong> Unlocks bulk claim feed upon authentication.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Form symmetry creates a polished enterprise aesthetic while Role-Based Access Control guarantees organizational trust.</div>
+    </div>
+
+    <!-- SLIDE 9 -->
+    <div class="slide-stage" id="slide-9">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Donor Operations</div>
+          <div class="slide-title">Donor Experience, Post Creation & Real-Time Tracking</div>
+        </div>
+        <div class="slide-num-tag">09 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">4-Step Donor Journey</span>
+            <span class="badge">POSTING FLOW</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>1. Open Modal:</strong> Click "Post Surplus Food" button from navbar or dashboard.</li>
+            <li><strong>2. Auto-Detect GPS:</strong> Single click detects current location & reverse-geocodes address.</li>
+            <li><strong>3. Fill Details:</strong> Specify portions, food type (Cooked/Raw), and expiry hours.</li>
+            <li><strong>4. Instant Broadcast:</strong> Publishes post immediately to live map and NGO SOS feed.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">Active Listings Hub</span>
+            <span class="badge green">REAL-TIME DASH</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Live Status:</strong> Visual indicators show "Available" or "Claimed" in real time.</li>
+            <li><strong>Claim Alerts:</strong> Immediate banner alerts donor when an NGO claims their food.</li>
+            <li><strong>Recipient Details:</strong> Displays claiming NGO name, phone number, and vehicle info.</li>
+            <li><strong>Handover Control:</strong> One-click button marking the food as "Handed Over".</li>
+            <li><strong>Expiry Safeguard:</strong> Visual warnings alert donor when food is close to expiring.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Impact Analytics</span>
+            <span class="badge">DONATION METRICS</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Cumulative Impact:</strong> Total meals rescued, kilograms saved, and families fed.</li>
+            <li><strong>Carbon Offset:</strong> Visual indicator estimating kilograms of CO2 emissions prevented.</li>
+            <li><strong>Rescue History:</strong> Complete chronological log of past donations.</li>
+            <li><strong>Ratings & Reviews:</strong> Displays feedback received from verified recipient shelters.</li>
+            <li><strong>Account Controls:</strong> Easy profile updates and secure logout button.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Donors experience zero administrative friction: an intuitive 30-second posting flow turns surplus into community nourishment.</div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide-stage" id="slide-10">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">NGO Operations</div>
+          <div class="slide-title">NGO Command Center & Bulk Logistics Pipeline</div>
+        </div>
+        <div class="slide-num-tag">10 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Darpan Verification</span>
+            <span class="badge">TRUST AUDIT</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Government Standing:</strong> Validates official non-profit status via Darpan ID.</li>
+            <li><strong>Anti-Resale Protection:</strong> Prevents black market exploitation of charity food.</li>
+            <li><strong>Verified NGO Badge:</strong> Visual trust badge displayed on all pickup communications.</li>
+            <li><strong>Fleet Readiness:</strong> Logs rescue vehicles and volunteer capacity.</li>
+            <li><strong>Emergency Priority:</strong> Verified NGOs receive high-urgency notifications first.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">SOS Bulk Surplus Feed</span>
+            <span class="badge green">COMMAND CENTER</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Large Volume Filter:</strong> Prioritizes high-quantity donations (50+ to 500+ meals).</li>
+            <li><strong>Urgency Ranking:</strong> Ranks listings by closest expiration deadline.</li>
+            <li><strong>Atomic Claim Lock:</strong> One-click lock prevents duplicate claims by other NGOs.</li>
+            <li><strong>Route Navigation:</strong> One-tap button opens route navigation to kitchen door.</li>
+            <li><strong>Direct Call:</strong> Enables phone coordination with restaurant managers.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Rescue Dispatch Pipeline</span>
+            <span class="badge">LOGISTICS STAGES</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Stage 1 - Claimed:</strong> Donor notified, pickup team dispatched.</li>
+            <li><strong>Stage 2 - En Route:</strong> Transit vehicle traveling to donor location.</li>
+            <li><strong>Stage 3 - Picked Up:</strong> Food inspected, loaded, and heading to shelter.</li>
+            <li><strong>Stage 4 - Distributed:</strong> Meals distributed to beneficiaries; post archived.</li>
+            <li><strong>Impact Scoreboard:</strong> NGO dashboard tallies total community meals delivered.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Equips non-profits with enterprise-grade logistics tools to rescue hundreds of meals from banquets before spoilage.</div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide-stage" id="slide-11">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Social Inclusion</div>
+          <div class="slide-title">Zero-Barrier Seeker Access & Bilingual Localization</div>
+        </div>
+        <div class="slide-num-tag">11 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">Zero-Barrier Access Ethics</span>
+            <span class="badge green">INCLUSIVE UX</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Dignity by Design:</strong> Hungry citizens locate meals without mandatory logins.</li>
+            <li><strong>Bridging Digital Divide:</strong> No passwords, phone numbers, or identity verification needed.</li>
+            <li><strong>Immediate Relief:</strong> Available food listings rendered directly on home page.</li>
+            <li><strong>One-Tap Directions:</strong> Instant link opens location directions or phone call.</li>
+            <li><strong>Universal Compatibility:</strong> Fully optimized for low-end Android mobile browsers.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Discovery & Filter Tools</span>
+            <span class="badge">SEARCH TOOLS</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Proximity Sorting:</strong> Dynamically calculates distance from current user GPS.</li>
+            <li><strong>Dietary Filters:</strong> Toggle between Pure Vegetarian, Non-Veg, and Vegan options.</li>
+            <li><strong>Category Pills:</strong> Filter by Cooked Meals, Raw Groceries, and Dry Packaged Food.</li>
+            <li><strong>Freshness Countdown:</strong> Shows exact hours remaining before item expires.</li>
+            <li><strong>Portion Count:</strong> Clearly shows available meal quantities (e.g. "25 Meals").</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Bilingual i18n Engine</span>
+            <span class="badge">LOCALIZATION</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Dual Language Support:</strong> Instant toggle between English and Hindi (हिंदी).</li>
+            <li><strong>Contextual Translations:</strong> Translates navigation, categories, and urgent badges.</li>
+            <li><strong>Grassroots Reach:</strong> Enables non-English literate communities to navigate easily.</li>
+            <li><strong>Extensible Dictionaries:</strong> Structured key-value schema ready for regional tongues.</li>
+            <li><strong>Preference Storage:</strong> Remembers selected language in browser localStorage.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Eliminating technical and linguistic barriers ensures food reaches those in need with speed and dignity.</div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide-stage" id="slide-12">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">System Resilience</div>
+          <div class="slide-title">Dynamic Expiry Engine & Dual-Mode State Synchronization</div>
+        </div>
+        <div class="slide-num-tag">12 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card amber">
+          <div class="card-header">
+            <span class="card-title">Dynamic Expiry Engine</span>
+            <span class="badge amber">FOOD SAFETY</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Perishable Risk:</strong> Distributing expired food creates health and safety hazards.</li>
+            <li><strong>Timestamp Calculation:</strong> createdAt + (expiryHours * 3,600,000) = deadline.</li>
+            <li><strong>60-Second Heartbeat:</strong> App dynamically recalculates remaining shelf minutes.</li>
+            <li><strong>Auto-Invalidation:</strong> Once timer hits 0, post status flips to "Expired" automatically.</li>
+            <li><strong>Color-Coded Urgency:</strong> Shifts from green (>3h) to amber (1-3h) to red (<1h).</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">Dual-Mode State Sync</span>
+            <span class="badge green">RESILIENCE</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Primary Tier:</strong> Real-time REST sync with live MongoDB Atlas cloud cluster.</li>
+            <li><strong>Offline Fallback:</strong> Automatic data caching in browser localStorage.</li>
+            <li><strong>Zero Downtime:</strong> If backend goes offline, app continues running without crashing.</li>
+            <li><strong>Data Reconciliation:</strong> Re-synchronizes pending records upon cloud reconnection.</li>
+            <li><strong>Optimistic Updates:</strong> Claims update UI instantaneously before server response.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Client Performance</span>
+            <span class="badge">OPTIMIZATION</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>React useMemo:</strong> Prevents redundant recalculation of distance coordinates.</li>
+            <li><strong>Lazy Map Tiles:</strong> Leaflet canvas tiles load only within visible viewport.</li>
+            <li><strong>Zero Redux Bloat:</strong> Clean React 18 Context API keeps JS bundle size tiny.</li>
+            <li><strong>Fast DB Queries:</strong> Indexed MongoDB lookups guarantee sub-20ms latency.</li>
+            <li><strong>Production Build:</strong> Vite compresses and tree-shakes assets for lightning speed.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Automated freshness tracking and offline fallbacks protect consumer safety while maintaining uninterrupted system availability.</div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide-stage" id="slide-13">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Engineering Challenges</div>
+          <div class="slide-title">Technical Hurdles Overcome & Key Innovations</div>
+        </div>
+        <div class="slide-num-tag">13 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">1. GPS Reverse Geocoding</span>
+            <span class="badge green">GEO PIPELINE</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>The Problem:</strong> Raw coordinates (12.9716, 77.5946) are unintelligible to humans.</li>
+            <li><strong>Our Solution:</strong> Integrated OpenStreetMap Nominatim reverse geocoding API.</li>
+            <li><strong>Innovation:</strong> Automatically parses road, neighborhood, and city on GPS detect.</li>
+            <li><strong>Fallback:</strong> Formatted coordinate fallback prevents form submission failures.</li>
+            <li><strong>Result:</strong> 100% clarity for pickup drivers and volunteers.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">2. Form Geometry Symmetry</span>
+            <span class="badge">UI HARMONY</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>The Problem:</strong> Login, Donor, and NGO forms had mismatched sizes and jerky shifts.</li>
+            <li><strong>Our Solution:</strong> Re-engineered all 3 auth interfaces into a unified geometric card matrix.</li>
+            <li><strong>Innovation:</strong> Standardized modal widths, padding tokens, and field styling.</li>
+            <li><strong>UX Win:</strong> Smooth tabs, zero modal jumping, and clean role-switching.</li>
+            <li><strong>Result:</strong> Enterprise aesthetic matching top-tier commercial web apps.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">3. Cloud Database Migration</span>
+            <span class="badge">CLOUD DB</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>The Problem:</strong> In-memory storage was lost on every server restart.</li>
+            <li><strong>Our Solution:</strong> Migrated to production MongoDB Atlas cloud replica cluster.</li>
+            <li><strong>Innovation:</strong> Strongly typed Mongoose schemas with hybrid state synchronization.</li>
+            <li><strong>Data Safety:</strong> Pre-seeded demo accounts allow one-click testing without setup.</li>
+            <li><strong>Result:</strong> High-availability persistent database accessible anywhere.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">Rigorous engineering discipline turned real-world integration hurdles into reliable, user-friendly production features.</div>
+    </div>
+
+    <!-- SLIDE 14 -->
+    <div class="slide-stage" id="slide-14">
+      <div class="slide-header">
+        <div>
+          <div class="slide-tag">Future Roadmap</div>
+          <div class="slide-title">Enterprise Scaling, AI Verification & Commercial Integrations</div>
+        </div>
+        <div class="slide-num-tag">14 / 15</div>
+      </div>
+      <div class="slide-body">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Commercial Food APIs</span>
+            <span class="badge">API INTEGRATION</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Swiggy & Zomato Webhooks:</strong> Ingest cancelled food orders and restaurant surplus.</li>
+            <li><strong>Quick-Commerce Rescues:</strong> Connect with Blinkit/Zepto dark stores for produce.</li>
+            <li><strong>Supermarket Feeds:</strong> Automate donations approaching 'Best Before' dates.</li>
+            <li><strong>Open API Protocol:</strong> Open Food Rescue JSON schema for third-party partners.</li>
+            <li><strong>80G Tax Receipts:</strong> Generates automated digital tax exemption receipts for donors.</li>
+          </ul>
+        </div>
+        <div class="card emerald">
+          <div class="card-header">
+            <span class="card-title">Cold-Chain Route Optimization</span>
+            <span class="badge green">OPTIMAL ROUTING</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>Multi-Stop Route Optimizer:</strong> Dijkstra / A* routing algorithm for NGO vans.</li>
+            <li><strong>Dynamic Batching:</strong> Clusters multiple small donations along a single transit corridor.</li>
+            <li><strong>IoT Temperature Telemetry:</strong> Cold-chain sensor telemetry logged via WebSockets.</li>
+            <li><strong>Volunteer PWA:</strong> Progressive Web App for field volunteers with offline maps.</li>
+            <li><strong>Automated ETA Alerts:</strong> Real-time GPS tracking for recipient shelter kitchens.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">AI Vision & Omnichannel</span>
+            <span class="badge">AI & TELEPHONY</span>
+          </div>
+          <ul class="card-list">
+            <li><strong>AI Freshness Verification:</strong> Gemini Vision API checks food photos and packaging.</li>
+            <li><strong>Automated Spoilage Warning:</strong> Vision model detects discoloration or broken seals.</li>
+            <li><strong>Twilio SMS & WhatsApp:</strong> Pushes urgent food alerts to volunteers without internet.</li>
+            <li><strong>Voice Assist Navigation:</strong> Audio guidance in local dialects for low-literacy users.</li>
+            <li><strong>Tamper-Proof Audit:</strong> Cryptographic proof-of-distribution log for non-profits.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide-footer">FoodResQ is architected to scale from a municipal pilot to a nationwide automated surplus food recovery network.</div>
+    </div>
+
+    <!-- SLIDE 15 -->
+    <div class="slide-stage dark-theme" id="slide-15">
+      <div class="dark-container">
+        <div class="title-banner">
+          <h1>FoodResQ — Project Summary & Viva Defense</h1>
+          <h2>A Complete, Production-Ready MERN Engineering Solution for Social Impact</h2>
+          <p>Presented by: Zahid | Academic Year: 2026</p>
+        </div>
+        <div class="dark-grid">
+          <div class="dark-card">
+            <div class="dark-card-title" style="color:#34d399;">Key Accomplishments</div>
+            <ul class="dark-list">
+              <li>Full 3-Tier MERN Architecture implemented & deployed</li>
+              <li>Zero-Barrier access for hungry citizens & vulnerable seekers</li>
+              <li>GPS auto-detection & OpenStreetMap reverse geocoding</li>
+              <li>Symmetrical 3-way authentication with Darpan ID checks</li>
+              <li>Real-time dynamic expiry calculation & countdown timers</li>
+              <li>Live MongoDB Atlas cloud database with replica clustering</li>
+            </ul>
+          </div>
+          <div class="dark-card">
+            <div class="dark-card-title" style="color:#fbbf24;">System Performance</div>
+            <ul class="dark-list">
+              <li>13 REST API endpoints active & documented</li>
+              <li>Sub-1-second GPS location resolution</li>
+              <li>Sub-20ms database query latency on Atlas</li>
+              <li>100% fluid responsive UI across mobile & desktop</li>
+              <li>Zero third-party proprietary mapping fees (Leaflet/OSM)</li>
+              <li>English + Hindi bilingual localization engine</li>
+            </ul>
+          </div>
+          <div class="dark-card">
+            <div class="dark-card-title" style="color:#93c5fd;">Open for Questions</div>
+            <ul class="dark-list">
+              <li>Live App & Cloud API ready for demonstration</li>
+              <li>Ready to explain codebase, schemas & state logic</li>
+              <li>Ready to discuss engineering trade-offs & scaling roadmap</li>
+              <li>Thank you for your time & consideration!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Keyboard instructions hint -->
+  <div class="kbd-hint">
+    <span>Navigate:</span>
+    <kbd>◀</kbd>
+    <kbd>▶</kbd>
+    <span>or Click Next/Previous</span>
+  </div>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 15;
+
+    function showSlide(index) {
+      if (index < 1) index = 1;
+      if (index > totalSlides) index = totalSlides;
+      currentSlide = index;
+
+      document.querySelectorAll('.slide-stage').forEach((el, i) => {
+        el.classList.toggle('active', (i + 1) === currentSlide);
+      });
+
+      const formatted = String(currentSlide).padStart(2, '0');
+      document.getElementById('slideIndicator').textContent = `Slide ${formatted} / ${totalSlides}`;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        showSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        showSlide(currentSlide - 1);
+      }
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          alert(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      } else if (e.key === 'f' || e.key === 'F') {
+        toggleFullScreen();
+      } else if (e.key === 'Home') {
+        showSlide(1);
+      } else if (e.key === 'End') {
+        showSlide(totalSlides);
+      }
+    });
+  </script>
+</body>
+</html>
